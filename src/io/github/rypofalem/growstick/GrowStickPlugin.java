@@ -33,7 +33,7 @@ public class GrowStickPlugin extends JavaPlugin implements Listener{
 		skillsEnabled = Bukkit.getPluginManager().isPluginEnabled("Skills");
 	}
 	
-	@EventHandler (priority = EventPriority.NORMAL, ignoreCancelled=true)
+	@EventHandler (priority = EventPriority.MONITOR, ignoreCancelled=true)
 	public void onRightClick(PlayerInteractEvent event){
 		if(!event.getPlayer().hasPermission("growstick.use")) return;
 		if(event.getHand() == EquipmentSlot.OFF_HAND) return;
