@@ -33,14 +33,14 @@ public class GrowStickPlugin extends JavaPlugin implements Listener{
 		skillsEnabled = Bukkit.getPluginManager().isPluginEnabled("Skills");
 	}
 	
-	@EventHandler (priority = EventPriority.MONITOR, ignoreCancelled=true)
+	@EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled=true)
 	public void onRightClick(PlayerInteractEvent event){
 		if(!event.getPlayer().hasPermission("growstick.use")) return;
-		if(event.getHand() == EquipmentSlot.OFF_HAND) return;
 		if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-		ItemStack growstick = event.getItem();
+		ItemStack growstick = event.getPlayer().getEquipment().getItemInMainHand();
 		if(growstick == null) return; 
 		if(growstick.getType() != Material.STICK) return;
+		if(event.getHand() == EquipmentSlot.OFF_HAND) event.setCancelled(true);
 		Block clickedBlock = event.getClickedBlock();
 		World world = clickedBlock.getWorld();
 		world.playSound(clickedBlock.getLocation(), Sound.BLOCK_WATER_AMBIENT, .1f, 1);
