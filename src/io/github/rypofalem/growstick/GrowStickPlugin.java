@@ -61,6 +61,7 @@ public class GrowStickPlugin extends JavaPlugin implements Listener{
 			for(int yOffset = 2; yOffset >= -1; yOffset--){
 				Block crop = world.getBlockAt(x, y + yOffset, z);
 				if(crop.getType() == Material.PORTAL) continue; //don't make pigmen spawn
+				if(crop.getType() == Material.REDSTONE_LAMP_ON) continue; //don't update redstone lamps that are glitched on
 				if(crop.getType() != Material.AIR){ //any other block is safe to schedule an update for
 					Location blockLoc = new Location(world, x + .5, y + yOffset + .99, z + .5);
 					BlockUpdater.update(blockLoc);
