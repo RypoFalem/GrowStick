@@ -1,0 +1,8 @@
+blacklist:
+  -portal
+  -REDSTONE_LAMP_ON
+
+#How much each skill level will increase the speed of the tool
+skillMulitiplier: .005
+#The odds of an effected block updating each tick
+baseMultiplier: .2
