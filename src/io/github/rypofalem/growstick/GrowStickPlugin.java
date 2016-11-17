@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -44,7 +45,7 @@ public class GrowStickPlugin extends JavaPlugin implements Listener{
 		reloadConfig();
 		if(getConfig() == null) return;
 		doNotUpdateList = new ArrayList<Material>();
-		
+
 		if(getConfig().contains("blacklist")){
 			List<String> blacklist = getConfig().getStringList("blacklist");
 			if(blacklist != null){
@@ -58,11 +59,11 @@ public class GrowStickPlugin extends JavaPlugin implements Listener{
 				}
 			}
 		}
-		
+
 		if(getConfig().isDouble("baseMultiplier")){
 			baseMultiplier = (float) getConfig().getDouble("baseMultiplier");
 		}
-		
+
 		if(getConfig().isDouble("skillMultiplier")){
 			skillMultiplier = (float) getConfig().getDouble("skillMultiplier");
 		}
@@ -82,9 +83,10 @@ public class GrowStickPlugin extends JavaPlugin implements Listener{
 
 		int range = getRange(event.getPlayer());
 		int length= 2*range + 1;
-		float updateBase = length * length * getMultiplier(event.getPlayer());
-		int updates = (int) Math.max(1, updateBase * baseMultiplier);
-		if((updateBase - (int)(updateBase)) * baseMultiplier <= rand.nextFloat()){
+		float updateBase = length * length * getMultiplier(event.getPlayer()) * baseMultiplier;
+
+		int updates = (int) Math.max(1, updateBase);
+		if((updateBase - (int)(updateBase)) <= rand.nextFloat()){
 			//TODO: optimize so this happens 1/x times without random number generation
 			updates++; 
 		}
@@ -96,19 +98,11 @@ public class GrowStickPlugin extends JavaPlugin implements Listener{
 			for(int yOffset = 2; yOffset >= -1; yOffset--){
 				Block crop = world.getBlockAt(x, y + yOffset, z);
 				Material cropType = crop.getType();
-				boolean isBlacklisted = false;
-				for(Material mat : doNotUpdateList){
-					if(cropType.equals(mat)){
-						isBlacklisted = true;
-						break;
-					}
-				}
-				if(isBlacklisted) continue;
-				if(crop.getType() != Material.AIR){ //any other block is safe to schedule an update for
-					Location blockLoc = new Location(world, x + .5, y + yOffset + .99, z + .5);
-					BlockUpdater.update(blockLoc);
-					world.playEffect(blockLoc, Effect.FLYING_GLYPH, 1 );
-				}
+				if(doNotUpdateList.contains(cropType)) continue;
+				if(crop.getType() == Material.AIR) continue;
+				Location blockLoc = new Location(world, x + .5, y + yOffset + .99, z + .5);
+				BlockUpdater.update(blockLoc);
+				world.spawnParticle(Particle.ENCHANTMENT_TABLE, blockLoc, 1);
 			}
 		}
 

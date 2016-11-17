@@ -8,6 +8,5 @@ softdepend: [Skills]
 commands:
 permissions:
   growstick.use:
-    escription: Use the growstick.
+    description: Use the growstick.
     default: true
-  
