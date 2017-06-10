@@ -108,7 +108,9 @@ public class GrowStickPlugin extends JavaPlugin implements Listener{
 
 		for(int xOffset = range * -1; xOffset <= range; xOffset++){
 			for(int zOffset = range * -1; zOffset <= range; zOffset++){
-				world.playEffect(clickedBlock.getLocation().clone().add(xOffset + .5, 1, zOffset + .5), Effect.SPLASH, 1);
+				Location loc = clickedBlock.getLocation().clone().add(xOffset + .5, 1, zOffset + .5);
+				world.spawnParticle(Particle.WATER_SPLASH, loc, 1);
+				//world.playEffect(clickedBlock.getLocation().clone().add(xOffset + .5, 1, zOffset + .5), Effect.SPLASH, 1);
 			}
 		}
 	}
