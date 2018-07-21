@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/growstick.iml" filepath="$PROJECT_DIR$/growstick.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GrowStick.iml" filepath="$PROJECT_DIR$/GrowStick.iml" />
     </modules>
   </component>
 </project>
