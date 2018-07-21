@@ -4,7 +4,7 @@
   <groupId>io.github.rypofalem.growstick</groupId>
   <artifactId>growstick</artifactId>
   <packaging>jar</packaging>
-  <version>1.12-3</version>
+  <version>1.0-SNAPSHOT</version>
   <name>growstick</name>
   <url>http://maven.apache.org</url>
 
@@ -19,14 +19,7 @@
     <dependency> <!-- Spigot (this includes Spigot API, Bukkit API, Craftbukkit and NMS) -->
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot</artifactId>
-      <version>1.12-R0.1-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
-    <!--Skills-->
-    <dependency>
-      <groupId>com.winthier.skills</groupId>
-      <artifactId>skills</artifactId>
-      <version>0.1</version>
+      <version>1.13-pre7-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>

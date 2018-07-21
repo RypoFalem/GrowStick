@@ -1,10 +1,10 @@
 name: GrowStick
 main: io.github.rypofalem.growstick.GrowStickPlugin
-version: 1.11-1.2
+version: 4
+api-version: 1.13
 website: rypofalem.github.io
 author: RypoFalem
 description: Use an item to make plants grow faster.
-softdepend: [Skills]
 commands:
 permissions:
   growstick.use:
