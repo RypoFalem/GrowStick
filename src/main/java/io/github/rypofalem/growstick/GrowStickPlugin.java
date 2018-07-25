@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -25,7 +24,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class GrowStickPlugin extends JavaPlugin implements Listener{
 	Random rand;
 	float baseMultiplier = .2f;
-	ArrayList<Material> doNotUpdateList;
+	ArrayList<Material> doUpdateList;
 
 	@Override
 	public void onEnable(){
@@ -38,15 +37,15 @@ public class GrowStickPlugin extends JavaPlugin implements Listener{
 		saveDefaultConfig();
 		reloadConfig();
 		if(getConfig() == null) return;
-		doNotUpdateList = new ArrayList<>();
+		doUpdateList = new ArrayList<>();
 
-		if(getConfig().contains("blacklist")){
-			List<String> blacklist = getConfig().getStringList("blacklist");
-			if(blacklist != null){
-				for(String matName : blacklist){
+		if(getConfig().contains("whitelist")){
+			List<String> whitelist = getConfig().getStringList("whitelist");
+			if(whitelist != null){
+				for(String matName : whitelist){
 					try{
 						Material mat = Material.valueOf(matName.toUpperCase());
-						doNotUpdateList.add(mat);
+						doUpdateList.add(mat);
 					}catch(Exception e){
 						Bukkit.getLogger().info("Invalid Material name in GrowStick/config.yml: " + matName);
 					}
@@ -69,19 +68,18 @@ public class GrowStickPlugin extends JavaPlugin implements Listener{
 		if(event.getHand() == EquipmentSlot.OFF_HAND) event.setCancelled(true);
 		Block clickedBlock = event.getClickedBlock();
 		World world = clickedBlock.getWorld();
-		world.playSound(clickedBlock.getLocation(), Sound.BLOCK_WATER_AMBIENT, .1f, 1);
 
-		int range = 1;
-		int length= 2 * range + 1;
-		float updateBase = length * length * baseMultiplier;
-
+		int range = 1; //radius of growstick AoE
+		int length= 2 * range + 1; //length of the square growstick AoE
 		// since there might be a fractional chance to update but updates always happen in integer amounts,
 		// separate the fractional chance and use that to decide if an extra update should be added
+		float updateBase = length * length * baseMultiplier;
 		int updates = (int) updateBase;
 		if((updateBase - (int)(updateBase)) >= rand.nextFloat()){
 			updates++;
 		}
 
+		//attempt to do block updates
 		for(int i = 0; i<updates; i++){
 			int x = rand.nextInt(length) - range + clickedBlock.getX();
 			int y = clickedBlock.getY();
@@ -89,20 +87,21 @@ public class GrowStickPlugin extends JavaPlugin implements Listener{
 			for(int yOffset = 2; yOffset >= -1; yOffset--){
 				Block crop = world.getBlockAt(x, y + yOffset, z);
 				Material cropType = crop.getType();
-				if(doNotUpdateList.contains(cropType)) continue;
-				if(crop.getType() == Material.AIR) continue;
+				if(!doUpdateList.contains(cropType)) continue;
 				Location blockLoc = new Location(world, x + .5, y + yOffset + .99, z + .5);
 				BlockUpdater.update(blockLoc);
 				world.spawnParticle(Particle.ENCHANTMENT_TABLE, blockLoc, 1);
 			}
 		}
 
+		//spawn water particles and play sound
 		for(int xOffset = range * -1; xOffset <= range; xOffset++){
 			for(int zOffset = range * -1; zOffset <= range; zOffset++){
 				Location loc = clickedBlock.getLocation().clone().add(xOffset + .5, 1, zOffset + .5);
 				world.spawnParticle(Particle.WATER_SPLASH, loc, 1);
 			}
 		}
+		world.playSound(clickedBlock.getLocation(), Sound.BLOCK_WATER_AMBIENT, .1f, 1);
 	}
 
 

@@ -18,14 +18,11 @@ public abstract class BlockUpdater {
 	static void update(Location loc){
 		net.minecraft.server.v1_13_R1.World mcWorld = ((org.bukkit.craftbukkit.v1_13_R1.CraftWorld) loc.getWorld()).getHandle();
 		BlockPosition blockPos = new BlockPosition(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
-
 		org.bukkit.block.Block bukkitBlock = loc.getBlock();
 		if(!(bukkitBlock.getBlockData() instanceof CraftBlockData)) return;
-
 		IBlockData blockData = ((CraftBlockData)bukkitBlock.getBlockData()).getState();
 		Block block = CraftMagicNumbers.getBlock(bukkitBlock.getType());
 
-		//mcWorld.a(blockPos, CraftMagicNumbers.getBlock(loc.getBlock().getType()), 1);
 		block.a(blockData, mcWorld, blockPos, random);
 	}
 }

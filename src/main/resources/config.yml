@@ -1,9 +1,30 @@
-blacklist:
-- NETHER_PORTAL
-- REDSTONE_LAMP
-- REAPETER
-- DISPENSER
-- DROPPER
+whitelist:
+#farmland crops
+- WHEAT
+- MELON_STEM
+- PUMPKIN_STEM
+- POTATOES
+- CARROTS
+- BEETROOTS
+#multi-block growables
+- SUGAR_CANE
+- CACTUS
+- CHORUS_PLANT
+- KELP
+#saplings
+- SPRUCE_SAPLING
+- ACACIA_SAPLING
+- BIRCH_SAPLING
+- DARK_OAK_SAPLING
+- JUNGLE_SAPLING
+- OAK_SAPLING
+#other
+- GRASS_BLOCK
+- VINE
+- RED_MUSHROOM
+- BROWN_MUSHROOM
+- COCOA
+- NETHER_WART
 
 #The odds of an effected block updating each tick
 baseMultiplier: .2
