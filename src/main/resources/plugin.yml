@@ -6,7 +6,14 @@ website: rypofalem.github.io
 author: RypoFalem
 description: Use an item to make plants grow faster.
 commands:
+  growstick:
+    description: admin growstick commands
+    usage: /<command> reload - reload configuration
+    permission: growstick.admin
 permissions:
   growstick.use:
     description: Use the growstick.
     default: true
+  growstick.admin:
+    description: admin only commands
+    default: OP

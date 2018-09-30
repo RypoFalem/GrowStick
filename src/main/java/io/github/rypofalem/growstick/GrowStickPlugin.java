@@ -11,6 +11,9 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -47,7 +50,7 @@ public class GrowStickPlugin extends JavaPlugin implements Listener{
 						Material mat = Material.valueOf(matName.toUpperCase());
 						doUpdateList.add(mat);
 					}catch(Exception e){
-						Bukkit.getLogger().info("Invalid Material name in GrowStick/config.yml: " + matName);
+						getLogger().warning("Invalid Material name in GrowStick/config.yml: " + matName);
 					}
 				}
 			}
@@ -104,9 +107,14 @@ public class GrowStickPlugin extends JavaPlugin implements Listener{
 		world.playSound(clickedBlock.getLocation(), Sound.BLOCK_WATER_AMBIENT, .1f, 1);
 	}
 
-
-	static void print(String message){
-		Bukkit.getServer().broadcastMessage(message);
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
+		if(args == null || args.length < 1 ) return false;
+		switch(args[0]){
+			case "reload" : reloadConfig();
+				break;
+			default: return false;
+		}
+		return true;
 	}
-
 }
