@@ -9,7 +9,7 @@ whitelist:
 #multi-block growables
 - SUGAR_CANE
 - CACTUS
-- CHORUS_PLANT
+- CHORUS_FLOWER
 - KELP
 #saplings
 - SPRUCE_SAPLING
