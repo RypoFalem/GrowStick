@@ -4,12 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,6 +22,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class GrowStickPlugin extends JavaPlugin implements Listener{
 	Random rand;
 	float baseMultiplier = .2f;
+	boolean allowAdventure = false;
+	List<String> blacklistedWorlds = new ArrayList<>();
 	ArrayList<Material> doUpdateList;
 
 	@Override
@@ -56,15 +53,18 @@ public class GrowStickPlugin extends JavaPlugin implements Listener{
 			}
 		}
 
-		if(getConfig().isDouble("baseMultiplier")){
-			baseMultiplier = (float) getConfig().getDouble("baseMultiplier");
-		}
+		blacklistedWorlds = getConfig().getStringList("worldBlacklist");
+		baseMultiplier = (float) getConfig().getDouble("baseMultiplier", .2);
+		allowAdventure = getConfig().getBoolean("allowAdventure", false);
 	}
 
 	@EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled=true)
 	public void onRightClick(PlayerInteractEvent event){
-		if(!event.getPlayer().hasPermission("growstick.use")) return;
-		if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+		if(!event.getPlayer().hasPermission("growstick.use")
+				|| event.getAction() != Action.RIGHT_CLICK_BLOCK
+		  		|| (!allowAdventure && event.getPlayer().getGameMode().equals(GameMode.ADVENTURE))
+				|| blacklistedWorlds.contains(event.getPlayer().getWorld().getName())) return;
+
 		ItemStack growstick = event.getPlayer().getEquipment().getItemInMainHand();
 		if(growstick == null) return; 
 		if(growstick.getType() != Material.STICK) return;
@@ -111,7 +111,8 @@ public class GrowStickPlugin extends JavaPlugin implements Listener{
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
 		if(args == null || args.length < 1 ) return false;
 		switch(args[0]){
-			case "reload" : reloadConfig();
+			case "reload" : loadConfig();
+				sender.sendMessage("Growstick configuration reloaded.");
 				break;
 			default: return false;
 		}

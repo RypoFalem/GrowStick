@@ -28,3 +28,8 @@ whitelist:
 
 #The odds of an effected block updating each tick
 baseMultiplier: .2
+
+worldBlacklist:
+#  - spawn
+
+allowAdventure: false
