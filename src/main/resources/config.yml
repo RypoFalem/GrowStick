@@ -8,6 +8,8 @@ whitelist:
 - BEETROOTS
 #multi-block growables
 - SUGAR_CANE
+- BAMBOO
+- BAMBOO_SAPLING
 - CACTUS
 - CHORUS_FLOWER
 - KELP
@@ -25,11 +27,23 @@ whitelist:
 - BROWN_MUSHROOM
 - COCOA
 - NETHER_WART
+- SWEET_BERRY_BUSH
 
-#The odds of an effected block updating each tick
+# The average number of update ticks per effected block
+# If there are are 9 effected blocks and baseMultiplier is .2, there will be 9 x .2 = 1.8 updates on average each use
+# Range from 0 to very high
 baseMultiplier: .2
 
-worldBlacklist:
-#  - spawn
+# The integer radius of the growstick
+# The growstick affects a square area with length (range*2 + 1)
+# range 0 is a 1x1 area, range 1 is a 3x3 area, range 2 is 5x5, range 3 is 7x7, etc
+range: 1
 
+# Disable growstick in these worlds
+worldBlacklist:
+
+# If false, disable growstick in adventure mode
 allowAdventure: false
+
+# Set to false unless you want occasional accidentally left in debug messages broadcast to the server ;)
+debug: false

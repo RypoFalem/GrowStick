@@ -1,14 +1,16 @@
-name: GrowStick
-main: io.github.rypofalem.growstick.GrowStickPlugin
-version: 4
+name: ${project.name}
+main: ${project.groupId}.${project.artifactId}.GrowStickPlugin
+version: ${project.version}
 api-version: 1.13
 website: rypofalem.github.io
 author: RypoFalem
-description: Use an item to make plants grow faster.
+description: ${project.description}
 commands:
   growstick:
     description: admin growstick commands
-    usage: /<command> reload - reload configuration
+    usage: "/<command> reload - reload configuration
+    \n/<command> give [playername] - give a growstick to a player
+    \n/<command> set - set the growstick to the item in your hand"
     permission: growstick.admin
 permissions:
   growstick.use:
